@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kausal</title>
+    <title>kausaldb.dev</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&display=swap" rel="stylesheet">
@@ -31,6 +31,16 @@
         .header {
             text-align: center;
             margin-bottom: 80px;
+        }
+
+        main a {
+            color: var(--text-main);
+            text-decoration: underline;
+        }
+
+        main a:hover {
+            color: var(--accent-fire);
+            text-decoration: underline;
         }
 
         h1 {
@@ -122,29 +132,41 @@
 <body>
 
     <header class="header">
-        <h1>kausal</h1>
-        <p class="tagline">Code is a graph. Query it.</p>
+        <h1>kausaldb</h1>
+        <p class="tagline">Code is a graph. Query it. Fast.</p>
         <a href="https://github.com/kausaldb/kausaldb" class="cta-button">Get Source →</a>
     </header>
 
     <main>
         <section class="section">
             <h2>// THE PROBLEM</h2>
-            <p>Your codebase is a network of dependencies, not a flat directory of text files. Grep and semantic search are the wrong tools for understanding this structure. They find text, not causality.</p>
+            <p>Your codebase is a network of dependencies, not a flat directory of text files. LLMs use grep and semantic search which are the wrong tools for understanding this structure. They find text, not causality.</p>
+        </section>
+
+        <section class="section">
+            <h2>// THE SOLUTION</h2>
+            <p>A high-performance graph database, purpose-built for LLM context retrieval from codebases.
+            <p>Built from scratch in <a href="https://ziglang.org/">Zig</a> with zero-cost abstractions, no hidden allocations, O(1) memory cleanup and no data races by design.</p>
+            <p>Custom LSM-tree storage engine with deterministic simulation testing. Same seed, same destruction, same recovery. Zero flakes.</p>
+
+
         </section>
 
         <section class="section">
             <h2>// THE QUERY</h2>
-            <p>Kausal models code as a directed graph. This allows for precise, structural queries that reveal the true relationships within your system.</p>
-            <pre><code>> TRACE USAGE OF TYPE BlockId
+            <p>Kausal models code as a directed graph. Enabling microsecond-level queries that reveal true structural relationships.</p>
+            <pre><code> $ kausal trace callees "StorageEngine.put_block" --depth 3
 
-[+] StorageEngine::put_block(id: BlockId)
-[+] Indexer::update_edge(from: BlockId, to: BlockId)
-[+] VFS::write_journal(block: BlockId)
-...and 42 other locations.</code></pre>
+[+] MemtableManager.put_block_durable
+[+] BlockIndex.put_block
+[+] WALEntry.create_put_block
+[+] GraphEdgeIndex.put_edge
+└── ArenaAllocator.alloc
+    └── HashMap.put
+...and 47 other callees in 0.06µs</code></pre>
         </section>
-    </main>
 
+    </main>
     <footer class="footer">
         <p>MIT License. Contact: <a href="mailto:hello@kausaldb.dev">hello@kausaldb.dev</a></p>
     </footer>
